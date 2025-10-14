@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
+             version="3.1">
+
+    <persistence-unit name="cliniquePU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- Classes entities -->
+        <class>org.example.entities.Patient</class>
+        <class>org.example.entities.Doctor</class>
+        <class>org.example.entities.Appointment</class>
+        <class>org.example.entities.Availability</class>
+        <class>org.example.entities.MedicalNote</class>
+        <class>org.example.entities.Department</class>
+        <class>org.example.entities.Specialty</class>
+        <class>org.example.entities.User</class>
+
+        <properties>
+            <!-- ✅ Configuration correcte pour Docker -->
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://postgres_clinique:5432/clinique"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <property name="jakarta.persistence.jdbc.password" value="postgres"/>
+
+
+
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+
+            <!-- Hibernate -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
