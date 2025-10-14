@@ -20,6 +20,13 @@ public class Specialty {
 
     public Specialty() {}
 
+    public Specialty(String code, String name, String description, Department department) {
+        this.code = code;
+        this.name = name;
+        this.description = description;
+        this.department = department;
+    }
+
     // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

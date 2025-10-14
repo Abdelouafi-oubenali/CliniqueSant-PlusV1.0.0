@@ -20,9 +20,9 @@ public class DepartmentServlet extends HttpServlet {
     public void init() throws ServletException {
         try {
             this.departmentRepository = new DepartmentRepository();
-            System.out.println("✅ DepartmentServlet initialisé avec Repository");
+            System.out.println("DepartmentServlet initialisé avec Repository");
         } catch (Exception e) {
-            System.err.println("❌ Erreur initialisation DepartmentRepository: " + e.getMessage());
+            System.err.println("Erreur initialisation DepartmentRepository: " + e.getMessage());
             e.printStackTrace();
             throw new ServletException("Erreur initialisation repository", e);
         }
@@ -33,13 +33,12 @@ public class DepartmentServlet extends HttpServlet {
         if (departmentRepository != null) {
             departmentRepository.close();
         }
-        System.out.println("🔚 DepartmentServlet détruit");
+        System.out.println("DepartmentServlet détruit");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("🚀 DepartmentServlet doGet appelé");
         System.out.println("Action: " + request.getParameter("action"));
 
         String action = request.getParameter("action");
@@ -66,7 +65,7 @@ public class DepartmentServlet extends HttpServlet {
                     listDepartments(request, response);
             }
         } catch (Exception e) {
-            System.err.println("❌ Erreur dans doGet: " + e.getMessage());
+            System.err.println("Erreur dans doGet: " + e.getMessage());
             e.printStackTrace();
             response.sendError(500, "Erreur interne: " + e.getMessage());
         }
@@ -76,7 +75,7 @@ public class DepartmentServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            System.out.println("📊 Chargement de la liste des départements depuis PostgreSQL...");
+            System.out.println("Chargement de la liste des départements depuis PostgreSQL...");
 
             // Test de connexion d'abord
             testDatabaseConnection();
@@ -116,11 +115,11 @@ public class DepartmentServlet extends HttpServlet {
                 request.setAttribute("errorMessage", getErrorMessage(error));
             }
 
-            System.out.println("➡️ Forward vers /admin/department/index.jsp");
+            System.out.println("Forward vers /admin/department/index.jsp");
             request.getRequestDispatcher("/admin/department/index.jsp").forward(request, response);
 
         } catch (Exception e) {
-            System.err.println("❌ Erreur dans listDepartments: " + e.getMessage());
+            System.err.println("Erreur dans listDepartments: " + e.getMessage());
             e.printStackTrace();
 
             // Fallback: données simulées en cas d'erreur
@@ -133,7 +132,7 @@ public class DepartmentServlet extends HttpServlet {
         System.out.println("=== DEBUG DATABASE STATE ===");
         System.out.println("Départements trouvés: " + departments.size());
         for (Department dept : departments) {
-            System.out.println("📌 " + dept.getId() + " | " + dept.getCode() + " | " + dept.getName());
+            System.out.println(" " + dept.getId() + " | " + dept.getCode() + " | " + dept.getName());
         }
         System.out.println("=============================");
     }
@@ -141,15 +140,15 @@ public class DepartmentServlet extends HttpServlet {
     private void testDatabaseConnection() {
         try {
             long count = departmentRepository.count();
-            System.out.println("✅ Test connexion PostgreSQL réussi - " + count + " départements");
+            System.out.println(" Test connexion PostgreSQL réussi - " + count + " départements");
         } catch (Exception e) {
-            System.err.println("❌ Test connexion PostgreSQL échoué: " + e.getMessage());
+            System.err.println(" Test connexion PostgreSQL échoué: " + e.getMessage());
             throw new RuntimeException("Connexion base de données échouée", e);
         }
     }
 
     private void setupFallbackData(HttpServletRequest request, String errorMessage) {
-        System.out.println("🔄 Utilisation des données de fallback: " + errorMessage);
+        System.out.println("Utilisation des données de fallback: " + errorMessage);
 
         List<Department> departments = List.of();
 
@@ -173,7 +172,7 @@ public class DepartmentServlet extends HttpServlet {
             request.setAttribute("department", null);
             request.getRequestDispatcher("/admin/department/form.jsp").forward(request, response);
         } catch (Exception e) {
-            System.err.println("❌ Erreur showAddForm: " + e.getMessage());
+            System.err.println(" Erreur showAddForm: " + e.getMessage());
             response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=loadform");
         }
     }
@@ -197,7 +196,7 @@ public class DepartmentServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=notfound");
             }
         } catch (Exception e) {
-            System.err.println("❌ Erreur showEditForm: " + e.getMessage());
+            System.err.println(" Erreur showEditForm: " + e.getMessage());
             response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=load");
         }
     }
@@ -221,7 +220,7 @@ public class DepartmentServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=notfound");
             }
         } catch (Exception e) {
-            System.err.println("❌ Erreur viewDepartment: " + e.getMessage());
+            System.err.println(" Erreur viewDepartment: " + e.getMessage());
             response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=load");
         }
     }
@@ -243,11 +242,11 @@ public class DepartmentServlet extends HttpServlet {
             }
 
             departmentRepository.delete(Long.parseLong(id));
-            System.out.println("🗑️ Suppression département ID: " + id);
+            System.out.println(" Suppression département ID: " + id);
             response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&success=deleted");
 
         } catch (Exception e) {
-            System.err.println("❌ Erreur deleteDepartment: " + e.getMessage());
+            System.err.println(" Erreur deleteDepartment: " + e.getMessage());
             response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=delete");
         }
     }
@@ -256,8 +255,8 @@ public class DepartmentServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             String action = request.getParameter("action");
-            System.out.println("📨 DepartmentServlet doPost - Action: " + action);
-            System.out.println("📨 Paramètres reçus:");
+            System.out.println("DepartmentServlet doPost - Action: " + action);
+            System.out.println(" Paramètres reçus:");
             request.getParameterMap().forEach((key, values) -> {
                 System.out.println("   " + key + ": " + String.join(", ", values));
             });
@@ -267,11 +266,11 @@ public class DepartmentServlet extends HttpServlet {
             } else if ("update".equals(action)) {
                 updateDepartment(request, response);
             } else {
-                System.err.println("❌ Action POST non reconnue: " + action);
+                System.err.println(" Action POST non reconnue: " + action);
                 response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=actioninconnue");
             }
         } catch (Exception e) {
-            System.err.println("❌ Erreur dans doPost: " + e.getMessage());
+            System.err.println("Erreur dans doPost: " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=" + e.getMessage());
         }
@@ -288,7 +287,7 @@ public class DepartmentServlet extends HttpServlet {
 
             // Validation
             if (code == null || code.trim().isEmpty() || name == null || name.trim().isEmpty()) {
-                System.err.println("❌ Champs obligatoires manquants pour l'ajout");
+                System.err.println(" Champs obligatoires manquants pour l'ajout");
                 response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=champsmanquants");
                 return;
             }
@@ -299,12 +298,12 @@ public class DepartmentServlet extends HttpServlet {
             department.setDescription(description != null ? description.trim() : null);
 
             Department savedDepartment = departmentRepository.save(department);
-            System.out.println("✅ Département ajouté avec succès - ID: " + savedDepartment.getId());
+            System.out.println(" Département ajouté avec succès - ID: " + savedDepartment.getId());
 
             response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&success=added");
 
         } catch (Exception e) {
-            System.err.println("❌ Erreur addDepartment: " + e.getMessage());
+            System.err.println(" Erreur addDepartment: " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=add");
         }
@@ -318,24 +317,24 @@ public class DepartmentServlet extends HttpServlet {
             String name = request.getParameter("name");
             String description = request.getParameter("description");
 
-            System.out.println("🔄 Mise à jour département - ID: " + id + ", Code: " + code + ", Name: " + name);
+            System.out.println(" Mise à jour département - ID: " + id + ", Code: " + code + ", Name: " + name);
 
             if (id == null || id.trim().isEmpty()) {
-                System.err.println("❌ ID manquant pour la mise à jour");
+                System.err.println(" ID manquant pour la mise à jour");
                 response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=idmanquant");
                 return;
             }
 
             // Validation
             if (code == null || code.trim().isEmpty() || name == null || name.trim().isEmpty()) {
-                System.err.println("❌ Champs obligatoires manquants");
+                System.err.println(" Champs obligatoires manquants");
                 response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=champsmanquants");
                 return;
             }
 
             Department department = departmentRepository.findById(Long.parseLong(id));
             if (department != null) {
-                System.out.println("📝 Département trouvé: " + department.getName());
+                System.out.println(" Département trouvé: " + department.getName());
 
                 // Sauvegarder les anciennes valeurs pour le log
                 String oldCode = department.getCode();
@@ -346,18 +345,18 @@ public class DepartmentServlet extends HttpServlet {
                 department.setDescription(description != null ? description.trim() : null);
 
                 Department updatedDepartment = departmentRepository.save(department);
-                System.out.println("✅ Département mis à jour avec succès:");
+                System.out.println(" Département mis à jour avec succès:");
                 System.out.println("   Ancien code: " + oldCode + " → Nouveau code: " + updatedDepartment.getCode());
                 System.out.println("   Ancien nom: " + oldName + " → Nouveau nom: " + updatedDepartment.getName());
                 System.out.println("   ID: " + updatedDepartment.getId());
 
                 response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&success=updated");
             } else {
-                System.err.println("❌ Département non trouvé pour l'ID: " + id);
+                System.err.println(" Département non trouvé pour l'ID: " + id);
                 response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=notfound");
             }
         } catch (Exception e) {
-            System.err.println("❌ Erreur updateDepartment: " + e.getMessage());
+            System.err.println(" Erreur updateDepartment: " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/DepartmentServlet?action=list&error=update");
         }

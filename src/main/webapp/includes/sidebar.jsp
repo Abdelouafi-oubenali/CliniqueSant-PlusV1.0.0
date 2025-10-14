@@ -17,6 +17,12 @@
                     <span>Départements</span>
                 </a>
             </li>
+          <li>
+                <a href="${pageContext.request.contextPath}/SpecialityServlet?action=list">
+                <i class="fas fa-hospital"></i>
+                <span>spesiality</span>
+            </a>
+        </li>
             <li class="active">
                 <a href="#">
                     <i class="fas fa-user-injured"></i>
@@ -24,7 +30,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="${pageContext.request.contextPath}/SpecialityServlet?action=list">
                     <i class="fas fa-user-md"></i>
                     <span>Médecins</span>
                 </a>

@@ -11,9 +11,9 @@ public class DepartmentRepository {
     public DepartmentRepository() {
         try {
             this.emf = Persistence.createEntityManagerFactory("cliniquePU");
-            System.out.println("✅ DepartmentRepository initialisé avec RESOURCE_LOCAL");
+            System.out.println(" DepartmentRepository initialisé avec RESOURCE_LOCAL");
         } catch (Exception e) {
-            System.err.println("❌ Erreur initialisation DepartmentRepository: " + e.getMessage());
+            System.err.println("Erreur initialisation DepartmentRepository: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Erreur initialisation repository", e);
         }
@@ -26,7 +26,7 @@ public class DepartmentRepository {
             TypedQuery<Department> query = entityManager.createQuery(jpql, Department.class);
             return query.getResultList();
         } catch (Exception e) {
-            System.err.println("❌ Erreur findAll: " + e.getMessage());
+            System.err.println(" Erreur findAll: " + e.getMessage());
             return List.of();
         } finally {
             entityManager.close();
@@ -43,7 +43,7 @@ public class DepartmentRepository {
         } catch (NoResultException e) {
             return null;
         } catch (Exception e) {
-            System.err.println("❌ Erreur findById: " + e.getMessage());
+            System.err.println("Erreur findById: " + e.getMessage());
             return null;
         } finally {
             entityManager.close();
@@ -70,7 +70,7 @@ public class DepartmentRepository {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            System.err.println("❌ Erreur save: " + e.getMessage());
+            System.err.println(" Erreur save: " + e.getMessage());
             throw new RuntimeException("Erreur sauvegarde département", e);
         } finally {
             entityManager.close();
@@ -91,7 +91,7 @@ public class DepartmentRepository {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            System.err.println("❌ Erreur delete: " + e.getMessage());
+            System.err.println("Erreur delete: " + e.getMessage());
             throw new RuntimeException("Erreur suppression département", e);
         } finally {
             entityManager.close();
@@ -105,7 +105,7 @@ public class DepartmentRepository {
             TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
             return query.getSingleResult();
         } catch (Exception e) {
-            System.err.println("❌ Erreur count: " + e.getMessage());
+            System.err.println("Erreur count: " + e.getMessage());
             return 0;
         } finally {
             entityManager.close();
@@ -119,7 +119,7 @@ public class DepartmentRepository {
             TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
             return query.getSingleResult();
         } catch (Exception e) {
-            System.err.println("❌ Erreur countActiveDoctors: " + e.getMessage());
+            System.err.println(" Erreur countActiveDoctors: " + e.getMessage());
             return 0;
         } finally {
             entityManager.close();
@@ -133,7 +133,7 @@ public class DepartmentRepository {
             TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
             return query.getSingleResult();
         } catch (Exception e) {
-            System.err.println("❌ Erreur countAvailableBeds: " + e.getMessage());
+            System.err.println("Erreur countAvailableBeds: " + e.getMessage());
             return 0;
         } finally {
             entityManager.close();
