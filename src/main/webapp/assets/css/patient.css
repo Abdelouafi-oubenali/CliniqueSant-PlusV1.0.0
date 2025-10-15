@@ -148,15 +148,15 @@ select.form-control {
     transform: translateY(-2px);
 }
 
-/* === STYLES DES CARTES DOCTEURS === */
-.doctors-grid {
+/* === STYLES DES CARTES PATIENTS === */
+.patients-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 20px;
     margin-top: 30px;
 }
 
-.doctor-card {
+.patient-card {
     background: white;
     border-radius: 15px;
     padding: 25px;
@@ -165,19 +165,19 @@ select.form-control {
     border-left: 4px solid #007bff;
 }
 
-.doctor-card:hover {
+.patient-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.12);
 }
 
-.doctor-header {
+.patient-header {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
     gap: 15px;
 }
 
-.doctor-icon {
+.patient-icon {
     width: 50px;
     height: 50px;
     border-radius: 10px;
@@ -189,13 +189,13 @@ select.form-control {
     background: linear-gradient(135deg, #007bff, #0056b3);
 }
 
-.doctor-info h3 {
+.patient-info h3 {
     font-size: 1.2rem;
     margin-bottom: 5px;
     color: #2c3e50;
 }
 
-.doctor-title {
+.patient-cin {
     background: #f8f9fa;
     padding: 2px 8px;
     border-radius: 4px;
@@ -203,21 +203,21 @@ select.form-control {
     color: #6c757d;
 }
 
-.doctor-details {
+.patient-details {
     margin-bottom: 15px;
 }
 
-.doctor-detail {
+.patient-detail {
     font-size: 0.9rem;
     margin-bottom: 8px;
     color: #2c3e50;
 }
 
-.doctor-detail strong {
+.patient-detail strong {
     color: #2c3e50;
 }
 
-.no-doctors {
+.no-patients {
     text-align: center;
     padding: 60px 20px;
     background: white;
@@ -335,13 +335,34 @@ select.form-control {
         justify-content: center;
     }
 
-    .doctors-grid {
+    .patients-grid {
         grid-template-columns: 1fr;
     }
 
-    .doctor-header {
+    .patient-header {
         flex-direction: column;
         text-align: center;
         gap: 10px;
     }
+}
+.form-section {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.form-section h4 {
+    color: #495057;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #007bff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-section h4 i {
+    color: #007bff;
 }

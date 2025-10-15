@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
                 System.out.println("Connexion réussie - Rôle: " + user.getRole()); // Debug
 
                 // Redirection selon le rôle
-                if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+                if ("ADMIN".equalsIgnoreCase(user.getRole()) || "DOCTOR".equalsIgnoreCase(user.getRole())) {
                     resp.sendRedirect(req.getContextPath() + "/admin/dashboard.jsp");
                 } else if ("PATIENT".equalsIgnoreCase(user.getRole())) {
                     resp.sendRedirect(req.getContextPath() + "/patient/index.jsp");

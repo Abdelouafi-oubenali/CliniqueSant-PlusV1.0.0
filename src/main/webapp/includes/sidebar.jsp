@@ -14,7 +14,7 @@
             <li>
                 <a href="${pageContext.request.contextPath}/DepartmentServlet?action=list">
                     <i class="fas fa-hospital"></i>
-                    <span>Départements</span>
+                    <span>Departements</span>
                 </a>
             </li>
           <li>
@@ -24,15 +24,15 @@
             </a>
         </li>
             <li class="active">
-                <a href="#">
+                 <a href="${pageContext.request.contextPath}/PatientServlet">
                     <i class="fas fa-user-injured"></i>
                     <span>Patients</span>
                 </a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath}/SpecialityServlet?action=list">
+                <a href="${pageContext.request.contextPath}/DoctorServlet">
                     <i class="fas fa-user-md"></i>
-                    <span>Médecins</span>
+                    <span>Medecins</span>
                 </a>
             </li>
             <li>
@@ -42,21 +42,21 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+               <a href="${pageContext.request.contextPath}/availabilities">
                     <i class="fas fa-pills"></i>
-                    <span>Médicaments</span>
+                    Disponibilité du docteur
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="fas fa-file-medical"></i>
-                    <span>Dossiers Médicaux</span>
+                    <span>Dossiers Medicaux</span>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="fas fa-cog"></i>
-                    <span>Paramètres</span>
+                    <span>Parametres</span>
                 </a>
             </li>
         </ul>

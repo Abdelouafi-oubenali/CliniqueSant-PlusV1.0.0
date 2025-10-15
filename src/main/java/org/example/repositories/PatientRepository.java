@@ -1,29 +1,29 @@
 package org.example.repositories;
 
-import org.example.entities.Specialty;
+import org.example.entities.Patient;
 import jakarta.persistence.*;
 import java.util.List;
 
-public class SpecialtyRepository {
+public class PatientRepository {
 
     private EntityManagerFactory emf;
 
-    public SpecialtyRepository() {
+    public PatientRepository() {
         try {
             this.emf = Persistence.createEntityManagerFactory("cliniquePU");
-            System.out.println("SpecialtyRepository initialisé avec RESOURCE_LOCAL");
+            System.out.println("PatientRepository initialisé avec RESOURCE_LOCAL");
         } catch (Exception e) {
-            System.err.println("Erreur initialisation SpecialtyRepository: " + e.getMessage());
+            System.err.println("Erreur initialisation PatientRepository: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Erreur initialisation repository", e);
         }
     }
 
-    public List<Specialty> findAll() {
+    public List<Patient> findAll() {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            String jpql = "SELECT s FROM Specialty s ORDER BY s.name";
-            TypedQuery<Specialty> query = entityManager.createQuery(jpql, Specialty.class);
+            String jpql = "SELECT p FROM Patient p LEFT JOIN FETCH p.user ORDER BY p.user.name";
+            TypedQuery<Patient> query = entityManager.createQuery(jpql, Patient.class);
             return query.getResultList();
         } catch (Exception e) {
             System.err.println("Erreur findAll: " + e.getMessage());
@@ -33,10 +33,15 @@ public class SpecialtyRepository {
         }
     }
 
-    public Specialty findById(Long id) {
+    public Patient findById(Long id) {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            return entityManager.find(Specialty.class, id);
+            String jpql = "SELECT p FROM Patient p LEFT JOIN FETCH p.user WHERE p.id = :id";
+            TypedQuery<Patient> query = entityManager.createQuery(jpql, Patient.class);
+            query.setParameter("id", id);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         } catch (Exception e) {
             System.err.println("Erreur findById: " + e.getMessage());
             return null;
@@ -45,28 +50,28 @@ public class SpecialtyRepository {
         }
     }
 
-    public Specialty save(Specialty specialty) {
+    public Patient save(Patient patient) {
         EntityManager entityManager = emf.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
 
-            Specialty savedSpecialty;
-            if (specialty.getId() == null) {
-                entityManager.persist(specialty);
-                savedSpecialty = specialty;
+            Patient savedPatient;
+            if (patient.getId() == null) {
+                entityManager.persist(patient);
+                savedPatient = patient;
             } else {
-                savedSpecialty = entityManager.merge(specialty);
+                savedPatient = entityManager.merge(patient);
             }
 
             transaction.commit();
-            return savedSpecialty;
+            return savedPatient;
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
             System.err.println("Erreur save: " + e.getMessage());
-            throw new RuntimeException("Erreur sauvegarde spécialité", e);
+            throw new RuntimeException("Erreur sauvegarde patient", e);
         } finally {
             entityManager.close();
         }
@@ -77,9 +82,9 @@ public class SpecialtyRepository {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            Specialty specialty = entityManager.find(Specialty.class, id);
-            if (specialty != null) {
-                entityManager.remove(specialty);
+            Patient patient = entityManager.find(Patient.class, id);
+            if (patient != null) {
+                entityManager.remove(patient);
             }
             transaction.commit();
         } catch (Exception e) {
@@ -87,21 +92,21 @@ public class SpecialtyRepository {
                 transaction.rollback();
             }
             System.err.println("Erreur delete: " + e.getMessage());
-            throw new RuntimeException("Erreur suppression spécialité", e);
+            throw new RuntimeException("Erreur suppression patient", e);
         } finally {
             entityManager.close();
         }
     }
 
-    public boolean existsByName(String name) {
+    public boolean existsByCin(String cin) {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            String jpql = "SELECT COUNT(s) FROM Specialty s WHERE s.name = :name";
+            String jpql = "SELECT COUNT(p) FROM Patient p WHERE p.cin = :cin";
             TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-            query.setParameter("name", name);
+            query.setParameter("cin", cin);
             return query.getSingleResult() > 0;
         } catch (Exception e) {
-            System.err.println("Erreur existsByName: " + e.getMessage());
+            System.err.println("Erreur existsByCin: " + e.getMessage());
             return false;
         } finally {
             entityManager.close();
@@ -111,7 +116,7 @@ public class SpecialtyRepository {
     public long count() {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            String jpql = "SELECT COUNT(s) FROM Specialty s";
+            String jpql = "SELECT COUNT(p) FROM Patient p";
             TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
             return query.getSingleResult();
         } catch (Exception e) {

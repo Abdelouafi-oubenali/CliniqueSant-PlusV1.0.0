@@ -38,4 +38,13 @@ public class Doctor {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+
+    // Méthodes manquantes pour le JSP
+    public String getFullName() {
+        return user != null ? user.getName() : "Docteur inconnu";
+    }
+
+    public String getSpecialization() {
+        return specialty != null ? specialty.getName() : "Non spécifié";
+    }
 }

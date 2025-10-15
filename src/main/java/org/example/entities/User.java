@@ -18,6 +18,16 @@ public class User {
 
     public User() {}
 
+    public static User createPatientUser(String name, String email, String password) {
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password); // À hasher en production
+        user.setRole("PATIENT");
+        user.setActive(true);
+        return user;
+    }
+
     // Getters et Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
