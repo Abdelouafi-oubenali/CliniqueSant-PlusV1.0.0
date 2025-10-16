@@ -3,6 +3,7 @@ package org.example.repositories;
 import org.example.entities.Patient;
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 public class PatientRepository {
 
@@ -11,18 +12,46 @@ public class PatientRepository {
     public PatientRepository() {
         try {
             this.emf = Persistence.createEntityManagerFactory("cliniquePU");
-            System.out.println("PatientRepository initialisé avec RESOURCE_LOCAL");
         } catch (Exception e) {
             System.err.println("Erreur initialisation PatientRepository: " + e.getMessage());
-            e.printStackTrace();
             throw new RuntimeException("Erreur initialisation repository", e);
         }
     }
 
+    // Méthode pour trouver un patient par ID
+    public Patient findById(Long id) {
+        EntityManager entityManager = emf.createEntityManager();
+        try {
+            return entityManager.find(Patient.class, id);
+        } catch (Exception e) {
+            System.err.println("Erreur findById: " + e.getMessage());
+            return null;
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    // Méthode pour trouver un patient par ID utilisateur
+    public Patient findByUserId(Long userId) {
+        EntityManager entityManager = emf.createEntityManager();
+        try {
+            String jpql = "SELECT p FROM Patient p WHERE p.user.id = :userId";
+            TypedQuery<Patient> query = entityManager.createQuery(jpql, Patient.class);
+            query.setParameter("userId", userId);
+            return query.getResultStream().findFirst().orElse(null);
+        } catch (Exception e) {
+            System.err.println("Erreur findByUserId: " + e.getMessage());
+            return null;
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    // Méthode pour récupérer tous les patients
     public List<Patient> findAll() {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            String jpql = "SELECT p FROM Patient p LEFT JOIN FETCH p.user ORDER BY p.user.name";
+            String jpql = "SELECT p FROM Patient p ORDER BY p.user.name";
             TypedQuery<Patient> query = entityManager.createQuery(jpql, Patient.class);
             return query.getResultList();
         } catch (Exception e) {
@@ -33,23 +62,7 @@ public class PatientRepository {
         }
     }
 
-    public Patient findById(Long id) {
-        EntityManager entityManager = emf.createEntityManager();
-        try {
-            String jpql = "SELECT p FROM Patient p LEFT JOIN FETCH p.user WHERE p.id = :id";
-            TypedQuery<Patient> query = entityManager.createQuery(jpql, Patient.class);
-            query.setParameter("id", id);
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        } catch (Exception e) {
-            System.err.println("Erreur findById: " + e.getMessage());
-            return null;
-        } finally {
-            entityManager.close();
-        }
-    }
-
+    // Méthode pour sauvegarder un patient (création ou mise à jour)
     public Patient save(Patient patient) {
         EntityManager entityManager = emf.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
@@ -77,6 +90,7 @@ public class PatientRepository {
         }
     }
 
+    // Méthode pour supprimer un patient
     public void delete(Long id) {
         EntityManager entityManager = emf.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
@@ -98,22 +112,24 @@ public class PatientRepository {
         }
     }
 
-    public boolean existsByCin(String cin) {
+    // Méthode pour trouver un patient par email
+    public Patient findByEmail(String email) {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            String jpql = "SELECT COUNT(p) FROM Patient p WHERE p.cin = :cin";
-            TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-            query.setParameter("cin", cin);
-            return query.getSingleResult() > 0;
+            String jpql = "SELECT p FROM Patient p WHERE p.user.email = :email";
+            TypedQuery<Patient> query = entityManager.createQuery(jpql, Patient.class);
+            query.setParameter("email", email);
+            return query.getResultStream().findFirst().orElse(null);
         } catch (Exception e) {
-            System.err.println("Erreur existsByCin: " + e.getMessage());
-            return false;
+            System.err.println("Erreur findByEmail: " + e.getMessage());
+            return null;
         } finally {
             entityManager.close();
         }
     }
 
-    public long count() {
+    // Méthode pour compter le nombre total de patients
+    public Long count() {
         EntityManager entityManager = emf.createEntityManager();
         try {
             String jpql = "SELECT COUNT(p) FROM Patient p";
@@ -121,7 +137,23 @@ public class PatientRepository {
             return query.getSingleResult();
         } catch (Exception e) {
             System.err.println("Erreur count: " + e.getMessage());
-            return 0;
+            return 0L;
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    // Méthode pour vérifier si un patient existe par ID utilisateur
+    public boolean existsByUserId(Long userId) {
+        EntityManager entityManager = emf.createEntityManager();
+        try {
+            String jpql = "SELECT COUNT(p) FROM Patient p WHERE p.user.id = :userId";
+            TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+            query.setParameter("userId", userId);
+            return query.getSingleResult() > 0;
+        } catch (Exception e) {
+            System.err.println("Erreur existsByUserId: " + e.getMessage());
+            return false;
         } finally {
             entityManager.close();
         }

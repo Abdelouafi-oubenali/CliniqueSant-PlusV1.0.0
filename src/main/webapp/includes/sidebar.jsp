@@ -36,7 +36,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="${pageContext.request.contextPath}/appointment">
                     <i class="fas fa-calendar-check"></i>
                     <span>Rendez-vous</span>
                 </a>
