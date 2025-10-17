@@ -73,24 +73,6 @@ public class CreateAppointmentServlet extends HttpServlet {
 
             System.out.println("Données parsées - doctorId: " + doctorId + ", date: " + date + ", startTime: " + startTime);
 
-            // Vérifier si le créneau est disponible
-            boolean isAvailable = appointmentRepository.isTimeSlotAvailable(doctorId, date, startTime, endTime);
-            System.out.println("Créneau disponible: " + isAvailable);
-
-            if (!isAvailable) {
-                response.sendRedirect(request.getContextPath() + "/appointment/availability?doctorId=" + doctorId + "&error=slot_taken");
-                return;
-            }
-
-            // Récupérer le médecin
-            Doctor doctor = doctorRepository.findById(doctorId);
-            System.out.println("Médecin trouvé: " + (doctor != null));
-
-            if (doctor == null) {
-                response.sendRedirect(request.getContextPath() + "/appointment?error=doctor_not_found");
-                return;
-            }
-
             // Récupérer ou CRÉER le patient
             Patient patient = patientRepository.findByUserId(user.getId());
             System.out.println("Patient initial trouvé: " + (patient != null));
@@ -119,6 +101,44 @@ public class CreateAppointmentServlet extends HttpServlet {
                 }
 
                 System.out.println("SUCCÈS - Patient créé avec ID: " + patient.getId());
+            }
+
+            // VÉRIFICATION 1: SI LE PATIENT A DÉJÀ UN RENDEZ-VOUS AVEC LE MÊME MÉDECIN LE MÊME JOUR
+            boolean hasAppointmentSameDoctorSameDay = appointmentRepository.hasAppointmentWithSameDoctorOnSameDay(patient.getId(), doctorId, date);
+            System.out.println("Le patient a déjà un rendez-vous avec ce médecin le " + date + ": " + hasAppointmentSameDoctorSameDay);
+
+            if (hasAppointmentSameDoctorSameDay) {
+                System.out.println("Impossible de réserver - le patient a déjà un rendez-vous avec ce médecin ce jour-là");
+                response.sendRedirect(request.getContextPath() + "/appointment/availability?doctorId=" + doctorId + "&error=already_has_appointment_same_doctor");
+                return;
+            }
+
+            // VÉRIFICATION 2: SI LE PATIENT A DÉJÀ UN RENDEZ-VOUS LE MÊME JOUR (TOUS MÉDECINS CONFONDUS)
+            boolean hasAppointmentSameDay = appointmentRepository.hasAppointmentOnSameDay(patient.getId(), date);
+            System.out.println("Le patient a déjà un rendez-vous le " + date + " (tous médecins): " + hasAppointmentSameDay);
+
+            if (hasAppointmentSameDay) {
+                System.out.println("Impossible de réserver - le patient a déjà un rendez-vous ce jour-là");
+                response.sendRedirect(request.getContextPath() + "/appointment/availability?doctorId=" + doctorId + "&error=already_has_appointment_today");
+                return;
+            }
+
+            // Vérifier si le créneau est disponible
+            boolean isAvailable = appointmentRepository.isTimeSlotAvailable(doctorId, date, startTime, endTime);
+            System.out.println("Créneau disponible: " + isAvailable);
+
+            if (!isAvailable) {
+                response.sendRedirect(request.getContextPath() + "/appointment/availability?doctorId=" + doctorId + "&error=slot_taken");
+                return;
+            }
+
+            // Récupérer le médecin
+            Doctor doctor = doctorRepository.findById(doctorId);
+            System.out.println("Médecin trouvé: " + (doctor != null));
+
+            if (doctor == null) {
+                response.sendRedirect(request.getContextPath() + "/appointment?error=doctor_not_found");
+                return;
             }
 
             // Créer le rendez-vous
@@ -164,7 +184,6 @@ public class CreateAppointmentServlet extends HttpServlet {
 
         System.out.println("=== FIN CREATE APPOINTMENT SERVLET ===");
     }
-
     @Override
     public void destroy() {
         if (appointmentRepository != null) {

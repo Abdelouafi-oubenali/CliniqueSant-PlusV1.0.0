@@ -127,6 +127,59 @@ public class AppointmentRepository {
         }
     }
 
+    public boolean hasAppointmentOnSameDay(Long patientId, LocalDate date) {
+        EntityManager entityManager = emf.createEntityManager();
+        try {
+            String jpql = "SELECT COUNT(a) FROM Appointment a WHERE a.patient.id = :patientId " +
+                    "AND a.appointmentDate = :date " +
+                    "AND a.status = 'PLANNED'";
+
+            TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+            query.setParameter("patientId", patientId);
+            query.setParameter("date", date);
+
+            Long count = query.getSingleResult();
+            System.out.println("Vérification rendez-vous même jour - Patient ID: " + patientId +
+                    ", Date: " + date + ", Count: " + count);
+
+            return count > 0;
+        } catch (Exception e) {
+            System.err.println("Erreur hasAppointmentOnSameDay: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    // Version alternative si vous voulez utiliser FUNCTION('DATE') pour extraire la date
+    public boolean hasAppointmentWithSameDoctorOnSameDay(Long patientId, Long doctorId, LocalDate date) {
+        EntityManager entityManager = emf.createEntityManager();
+        try {
+            String jpql = "SELECT COUNT(a) FROM Appointment a WHERE a.patient.id = :patientId " +
+                    "AND a.doctor.id = :doctorId " +
+                    "AND a.appointmentDate = :date " +
+                    "AND a.status = 'PLANNED'";
+
+            TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+            query.setParameter("patientId", patientId);
+            query.setParameter("doctorId", doctorId);
+            query.setParameter("date", date);
+
+            Long count = query.getSingleResult();
+            System.out.println("Vérification rendez-vous même docteur même jour - Patient ID: " + patientId +
+                    ", Doctor ID: " + doctorId + ", Date: " + date + ", Count: " + count);
+
+            return count > 0;
+        } catch (Exception e) {
+            System.err.println("Erreur hasAppointmentWithSameDoctorOnSameDay: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            entityManager.close();
+        }
+    }
+
     public void close() {
         if (emf != null && emf.isOpen()) {
             emf.close();

@@ -272,6 +272,41 @@
 <jsp:include page="/includes/header.jsp" />
 
 <section class="availability-container">
+
+    <!-- Message d'erreur pour rendez-vous avec le même médecin le même jour -->
+    <c:if test="${param.error == 'already_has_appointment_same_doctor'}">
+        <div class="alert alert-danger text-center fw-bold fs-5 border-3 shadow-sm"
+             style="background-color: #f8d7da; border-color: #dc3545;">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Impossible de réserver un rendez-vous. Vous avez déjà un rendez-vous programmé avec ce médecin pour cette date.
+        </div>
+    </c:if>
+
+    <!-- Message d'erreur pour rendez-vous le même jour (tous médecins) -->
+    <c:if test="${param.error == 'already_has_appointment_today'}">
+        <div class="alert alert-danger text-center fw-bold fs-5 border-3 shadow-sm"
+             style="background-color: #f8d7da; border-color: #dc3545; color: red ;">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Impossible de réserver un rendez-vous. Vous avez déjà un rendez-vous programmé pour cette date.
+        </div>
+    </c:if>
+
+    <!-- === CSS POUR CENTRER LES MESSAGES D'ERREUR === -->
+    <style>
+    .alert {
+      display: flex;
+      justify-content: center; /* Centre horizontalement le contenu */
+      align-items: center;
+      margin: 20px auto;
+      max-width: 900px;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    </style>
+
     <div class="section-container">
         <!-- Bouton retour -->
         <a href="${pageContext.request.contextPath}/appointment" class="back-btn">

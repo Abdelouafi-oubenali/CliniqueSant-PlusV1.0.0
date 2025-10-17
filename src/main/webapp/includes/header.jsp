@@ -13,10 +13,10 @@
 
             <nav>
                 <ul>
-                    <li><a href="${pageContext.request.contextPath}/">Accueil</a></li>
-                    <li><a href="${pageContext.request.contextPath}/services">Services</a></li>
-                    <li><a href="${pageContext.request.contextPath}/doctors">Médecins</a></li>
-                    <li><a href="${pageContext.request.contextPath}/appointment">Rendez-vous</a></li>
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Médecins</a></li>
+                    <li><a href="${pageContext.request.contextPath}/rondezVousServlit">Rendez-vous</a></li>
                     <li><a href="${pageContext.request.contextPath}/contact">Contact</a></li>
                 </ul>
             </nav>
