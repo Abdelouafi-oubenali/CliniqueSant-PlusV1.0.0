@@ -153,6 +153,14 @@
             opacity: 0.7;
         }
 
+        .time-slot.pause {
+            background: #fff3cd !important;
+            color: #856404 !important;
+            border-color: #ffeaa7 !important;
+            cursor: not-allowed !important;
+            opacity: 0.7;
+        }
+
         .time-slot.selected {
             background: #007bff !important;
             color: white !important;
@@ -403,28 +411,70 @@
                                             </c:if>
                                         </c:forEach>
 
+                                        <!-- Vérifier si c'est l'heure de pause (par exemple 12h-14h) -->
+                                        <c:set var="isPause1" value="false" />
+                                        <c:set var="isPause2" value="false" />
+
+                                        <!-- Exemple: Pause de 12h à 14h -->
+                                        <c:if test="${hour >= 12 and hour < 14}">
+                                            <c:set var="isPause1" value="true" />
+                                            <c:if test="${hour < 13}">
+                                                <c:set var="isPause2" value="true" />
+                                            </c:if>
+                                        </c:if>
+
                                         <!-- Créneau à l'heure pile -->
-                                        <div class="time-slot ${isBooked1 ? 'booked' : 'available'}"
-                                             data-date="${availability.day}"
-                                             data-time="${timeSlot1}"
-                                             <c:if test="${not isBooked1}">
-                                                 onclick="selectTimeSlot(this, '${availability.day}', '${timeSlot1}')"
-                                             </c:if>>
-                                            ${timeSlot1}
-                                            <c:if test="${isBooked1}"> (Réservé)</c:if>
-                                        </div>
+                                        <c:choose>
+                                            <c:when test="${isPause1}">
+                                                <div class="time-slot pause"
+                                                     data-date="${availability.day}"
+                                                     data-time="${timeSlot1}">
+                                                    ${timeSlot1} (Pause)
+                                                </div>
+                                            </c:when>
+                                            <c:when test="${isBooked1}">
+                                                <div class="time-slot booked"
+                                                     data-date="${availability.day}"
+                                                     data-time="${timeSlot1}">
+                                                    ${timeSlot1} (Réservé)
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="time-slot available"
+                                                     data-date="${availability.day}"
+                                                     data-time="${timeSlot1}"
+                                                     onclick="selectTimeSlot(this, '${availability.day}', '${timeSlot1}')">
+                                                    ${timeSlot1}
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
 
                                         <!-- Créneau à la demi-heure (sauf dernière heure) -->
                                         <c:if test="${hour < availability.endTime.hour - 1}">
-                                            <div class="time-slot ${isBooked2 ? 'booked' : 'available'}"
-                                                 data-date="${availability.day}"
-                                                 data-time="${timeSlot2}"
-                                                 <c:if test="${not isBooked2}">
-                                                     onclick="selectTimeSlot(this, '${availability.day}', '${timeSlot2}')"
-                                                 </c:if>>
-                                                ${timeSlot2}
-                                                <c:if test="${isBooked2}"> (Réservé)</c:if>
-                                            </div>
+                                            <c:choose>
+                                                <c:when test="${isPause2}">
+                                                    <div class="time-slot pause"
+                                                         data-date="${availability.day}"
+                                                         data-time="${timeSlot2}">
+                                                        ${timeSlot2} (Pause)
+                                                    </div>
+                                                </c:when>
+                                                <c:when test="${isBooked2}">
+                                                    <div class="time-slot booked"
+                                                         data-date="${availability.day}"
+                                                         data-time="${timeSlot2}">
+                                                        ${timeSlot2} (Réservé)
+                                                    </div>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="time-slot available"
+                                                         data-date="${availability.day}"
+                                                         data-time="${timeSlot2}"
+                                                         onclick="selectTimeSlot(this, '${availability.day}', '${timeSlot2}')">
+                                                        ${timeSlot2}
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:if>
                                     </c:forEach>
                                 </div>
@@ -487,7 +537,7 @@
 
         timeSlots.forEach(slot => {
             const dateStr = slot.getAttribute('data-date');
-            const timeStr = slot.getAttribute('data-time') || slot.textContent.trim().replace(' (Passé)', '').replace(' (Réservé)', '');
+            const timeStr = slot.getAttribute('data-time') || slot.textContent.trim().replace(' (Passé)', '').replace(' (Réservé)', '').replace(' (Pause)', '');
 
             if (dateStr && timeStr) {
                 // Créer la date complète avec l'heure
@@ -504,7 +554,7 @@
                     slot.onclick = null;
 
                     // Mettre à jour le texte seulement si nécessaire
-                    if (!slot.textContent.includes('(Passé)')) {
+                    if (!slot.textContent.includes('(Passé)') && !slot.textContent.includes('(Réservé)') && !slot.textContent.includes('(Pause)')) {
                         slot.textContent = timeStr + ' (Passé)';
                     }
                 }
@@ -516,8 +566,8 @@
         console.log('Tentative de sélection:', date, time);
         console.log('Élément classes:', element.classList);
 
-        // Vérifier si l'élément est marqué comme passé ou réservé
-        if (element.classList.contains('past') || element.classList.contains('booked')) {
+        // Vérifier si l'élément est marqué comme passé, réservé ou pause
+        if (element.classList.contains('past') || element.classList.contains('booked') || element.classList.contains('pause')) {
             console.log('Créneau non disponible - annulation');
             return;
         }
