@@ -76,7 +76,7 @@
 
                     <c:if test="${not empty sessionScope.user}">
                         <div class="appointment-buttons" id="appointment-buttons">
-                            <a href="${pageContext.request.contextPath}/patient/appointment" class="btn btn-success" id="book-appointment-btn">
+                            <a href="${pageContext.request.contextPath}/appointment" class="btn btn-success" id="book-appointment-btn">
                                 <i class="fas fa-calendar-plus"></i> Prendre un rendez-vous
                             </a>
                             <a href="${pageContext.request.contextPath}/patient/appointments" class="btn btn-outline" id="view-appointments-btn">

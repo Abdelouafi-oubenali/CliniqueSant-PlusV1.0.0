@@ -65,6 +65,19 @@ public class AppointmentServlet extends HttpServlet {
         }
     }
 
+    public void setDoctorRepository(DoctorRepository doctorRepository) {
+        this.doctorRepository = doctorRepository;
+    }
+
+    public void setSpecialtyRepository(SpecialtyRepository specialtyRepository) {
+        this.specialtyRepository = specialtyRepository;
+    }
+
+    public void setAvailabilityRepository(AvailabilityRepository availabilityRepository) {
+        this.availabilityRepository = availabilityRepository;
+    }
+
+
     @Override
     public void destroy() {
         if (doctorRepository != null) {
