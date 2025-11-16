@@ -1,4 +1,4 @@
-package org.example.dto;
+package org.example.dao;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

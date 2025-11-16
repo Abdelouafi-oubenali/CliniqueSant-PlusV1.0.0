@@ -14,6 +14,8 @@ import org.example.repositories.PatientRepository;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @WebServlet("/appointment/create")
 public class CreateAppointmentServlet extends HttpServlet {
@@ -68,7 +70,30 @@ public class CreateAppointmentServlet extends HttpServlet {
 
             Long doctorId = Long.parseLong(doctorIdParam);
             LocalDate date = LocalDate.parse(dateParam);
-            LocalTime startTime = LocalTime.parse(timeParam);
+
+            // CORRECTION: Utiliser DateTimeFormatter pour parser l'heure
+            System.out.println("Format d'heure reçu: '" + timeParam + "'");
+            System.out.println("Longueur: " + timeParam.length());
+
+            LocalTime startTime;
+            try {
+                // Essayer différents formats d'heure
+                if (timeParam.length() <= 5) {
+                    // Format simple: H:mm ou HH:mm
+                    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:mm");
+                    startTime = LocalTime.parse(timeParam, timeFormatter);
+                } else {
+                    // Format avec secondes
+                    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:mm:ss");
+                    startTime = LocalTime.parse(timeParam, timeFormatter);
+                }
+            } catch (DateTimeParseException e) {
+                System.err.println("Erreur de parsing de l'heure avec le premier format: " + e.getMessage());
+                // Essayer un autre format
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+                startTime = LocalTime.parse(timeParam, timeFormatter);
+            }
+
             LocalTime endTime = startTime.plusMinutes(30);
 
             System.out.println("Données parsées - doctorId: " + doctorId + ", date: " + date + ", startTime: " + startTime);
@@ -176,6 +201,9 @@ public class CreateAppointmentServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             System.err.println("Erreur de format des paramètres: " + e.getMessage());
             response.sendRedirect(request.getContextPath() + "/appointment?error=invalid_params");
+        } catch (DateTimeParseException e) {
+            System.err.println("Erreur de format d'heure: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/appointment?error=invalid_time_format&time=" + timeParam);
         } catch (Exception e) {
             System.err.println("ERREUR dans CreateAppointmentServlet: " + e.getMessage());
             e.printStackTrace();
@@ -184,6 +212,7 @@ public class CreateAppointmentServlet extends HttpServlet {
 
         System.out.println("=== FIN CREATE APPOINTMENT SERVLET ===");
     }
+
     @Override
     public void destroy() {
         if (appointmentRepository != null) {

@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  tomcat:
+    image: tomcat:10.1.12-jdk17
+    container_name: my_tomcat
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./webapps:/usr/local/tomcat/webapps
+    depends_on:
+      - db
+    environment:
+      - TZ=Europe/Paris
+
+  db:
+    image: postgres:15
+    container_name: my_postgres
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+
+volumes:
+  pgdata:
