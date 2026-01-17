@@ -18,20 +18,15 @@
         <class>org.example.entities.User</class>
 
         <properties>
-
-            <!-- ✅ Correct for Docker -->
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://db:5432/mydb"/>
-            <property name="jakarta.persistence.jdbc.user" value="myuser"/>
-            <property name="jakarta.persistence.jdbc.password" value="mypassword"/>
-
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://postgres_clinique:5432/clinique"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <property name="jakarta.persistence.jdbc.password" value="postgres"/>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
 
-            <!-- Hibernate -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-
         </properties>
     </persistence-unit>
 </persistence>

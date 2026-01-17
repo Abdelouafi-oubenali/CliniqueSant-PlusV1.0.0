@@ -1,29 +1,36 @@
-version: "3.9"
-
 services:
-  tomcat:
-    image: tomcat:10.1.12-jdk17
-    container_name: my_tomcat
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./webapps:/usr/local/tomcat/webapps
-    depends_on:
-      - db
+  postgres_clinique:
+    image: postgres:latest
+    container_name: postgres_clinique
     environment:
-      - TZ=Europe/Paris
-
-  db:
-    image: postgres:15
-    container_name: my_postgres
-    environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: clinique
     ports:
       - "5434:5432"
+    volumes:
+      - pgdata_clinique:/var/lib/postgresql/data
+
+  pgadmin4_clinique:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4_clinique
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8084:80"
+    depends_on:
+      - postgres_clinique
+
+  tomcat_clinique:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: tomcat_clinique
+    ports:
+      - "8083:8080"
+    depends_on:
+      - postgres_clinique
 
 volumes:
-  pgdata:
+  pgdata_clinique:

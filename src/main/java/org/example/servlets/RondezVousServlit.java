@@ -112,7 +112,7 @@ public class RondezVousServlit extends HttpServlet {
                     status,
                     date,
                     time,
-                    "Clinique SantéPlus",
+                    "Clinique SantePlus",
                     notes
             );
         } catch (Exception e) {

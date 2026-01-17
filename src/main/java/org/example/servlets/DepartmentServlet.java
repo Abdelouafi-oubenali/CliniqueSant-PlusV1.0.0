@@ -114,6 +114,7 @@ public class DepartmentServlet extends HttpServlet {
             if (error != null) {
                 request.setAttribute("errorMessage", getErrorMessage(error));
             }
+            System.out.println("resust test " +  request.getAttribute("totalDoctors"));
 
             System.out.println("Forward vers /admin/department/index.jsp");
             request.getRequestDispatcher("/admin/department/index.jsp").forward(request, response);

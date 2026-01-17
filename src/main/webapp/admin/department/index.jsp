@@ -175,10 +175,11 @@
 
                         <div class="search-group">
                             <div class="search-box">
-                                <input type="text" id="searchInput" placeholder="Rechercher un département...">
-                                <i class="fas fa-search"></i>
-                            </div>
+                            <input type="text" id="searchInput" placeholder="Rechercher un département..." 
+                                style="padding: 12px 20px 12px 45px; border: 2px solid #e0e0e0; border-radius: 25px; width: 100%; font-size: 14px;">
+                            <i class="fas fa-search" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #999;"></i>
                         </div>
+                                                </div>
                     </div>
                 </div>
 

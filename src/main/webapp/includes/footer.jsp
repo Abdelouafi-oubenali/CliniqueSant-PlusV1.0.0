@@ -4,7 +4,7 @@
 <footer>
     <div class="footer-container">
         <div class="footer-col">
-            <h3>Clinique SantéPlus</h3>
+            <h3>Clinique SantePlus</h3>
             <p>Votre partenaire santé de confiance, engagé à vous offrir des soins médicaux d'excellence dans un environnement bienveillant et moderne.</p>
             <div class="social-links">
                 <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -18,21 +18,21 @@
             <h3>Liens rapides</h3>
             <ul class="footer-links">
                 <li><a href="${pageContext.request.contextPath}/">Accueil</a></li>
-                <li><a href="${pageContext.request.contextPath}/services">Nos services</a></li>
-                <li><a href="${pageContext.request.contextPath}/doctors">Notre équipe</a></li>
-                <li><a href="${pageContext.request.contextPath}/pricing">Tarifs</a></li>
-                <li><a href="${pageContext.request.contextPath}/blog">Blog santé</a></li>
+                <li><a href="${pageContext.request.contextPath}/">Nos services</a></li>
+                <li><a href="${pageContext.request.contextPath}/">Notre équipe</a></li>
+                <li><a href="${pageContext.request.contextPath}/">Tarifs</a></li>
+                <li><a href="${pageContext.request.contextPath}/">Blog santé</a></li>
             </ul>
         </div>
 
         <div class="footer-col">
             <h3>Services</h3>
             <ul class="footer-links">
-                <li><a href="${pageContext.request.contextPath}/service/general-medicine">Médecine générale</a></li>
-                <li><a href="${pageContext.request.contextPath}/service/specialties">Spécialités</a></li>
-                <li><a href="${pageContext.request.contextPath}/service/medical-tests">Analyses médicales</a></li>
-                <li><a href="${pageContext.request.contextPath}/service/medical-imaging">Imagerie</a></li>
-                <li><a href="${pageContext.request.contextPath}/service/emergency">Urgences</a></li>
+                <li><a href="#">Médecine générale</a></li>
+                <li><a href="#">Spécialités</a></li>
+                <li><a href="#">Analyses médicales</a></li>
+                <li><a href="#">Imagerie</a></li>
+                <li><a href="#">Urgences</a></li>
             </ul>
         </div>
 
@@ -51,14 +51,14 @@
                     <i class="fas fa-phone-alt"></i>
                     <div>
                         <strong>Téléphone</strong><br>
-                        +33 1 45 67 89 10
+                        +212 616 16 12 69 29
                     </div>
                 </li>
                 <li>
                     <i class="fas fa-envelope"></i>
                     <div>
                         <strong>Email</strong><br>
-                        contact@santeplus.fr
+                        abdelouafioubenali9@@gmail.com
                     </div>
                 </li>
             </ul>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="copyright">
-        <p>&copy; 2023 Clinique SantéPlus. Tous droits réservés.</p>
+        <p>&copy; 2023 Clinique SantePlus. Tous droits réservés.</p>
     </div>
 </footer>
 

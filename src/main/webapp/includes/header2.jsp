@@ -6,8 +6,13 @@
     </div>
     <div class="user-info">
         <div style="margin-right: 15px; text-align: right;">
-            <p style="font-weight: 600;">Dr. Sophie Martin</p>
-            <p style="font-size: 0.8rem; color: var(--gray);">Administrateur</p>
+            <p style="font-weight: 600;">
+            ${sessionScope.user.name}
+        </p>
+        
+        <p style="font-size: 0.8rem; color: var(--gray);">
+            ${sessionScope.user.role}
+        </p>
         </div>
         <img src="https://i.pravatar.cc/150?img=32" alt="Profile">
     </div>

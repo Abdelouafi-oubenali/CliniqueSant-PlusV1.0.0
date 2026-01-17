@@ -520,3 +520,172 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+        /* Styles pour la barre de recherche - CORRECTION */
+        .filters-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #666;
+            white-space: nowrap;
+        }
+        
+        .filter-btn:hover {
+            border-color: #2c7fb8;
+            color: #2c7fb8;
+            transform: translateY(-1px);
+        }
+        
+        .filter-btn.active {
+            background: #2c7fb8;
+            border-color: #2c7fb8;
+            color: white;
+            box-shadow: 0 2px 6px rgba(44, 127, 184, 0.3);
+        }
+        
+        .search-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* STYLE CORRIGÉ POUR LA BARRE DE RECHERCHE */
+        .search-box {
+            position: relative;
+            width: 300px;
+            margin: 0;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+            color: #333;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #2c7fb8;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(44, 127, 184, 0.1);
+        }
+        
+        .search-box input::placeholder {
+            color: #999;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 16px;
+            pointer-events: none;
+        }
+        
+        /* Animation pour le focus */
+        .search-box input:focus + i {
+            color: #2c7fb8;
+        }
+        
+        /* Style responsive pour mobile */
+        @media (max-width: 768px) {
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .filter-buttons {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+            
+            .filter-buttons::-webkit-scrollbar {
+                height: 4px;
+            }
+            
+            .filter-buttons::-webkit-scrollbar-thumb {
+                background: #ccc;
+                border-radius: 2px;
+            }
+            
+            .search-group {
+                width: 100%;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .search-box input {
+                padding: 10px 20px 10px 40px;
+            }
+        }
+        
+        /* Amélioration pour les petits écrans */
+        @media (max-width: 480px) {
+            .filter-buttons {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .filter-btn {
+                padding: 10px 8px;
+                font-size: 13px;
+                text-align: center;
+            }
+        }

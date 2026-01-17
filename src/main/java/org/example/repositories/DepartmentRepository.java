@@ -115,7 +115,7 @@ public class DepartmentRepository {
     public long countActiveDoctors() {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            String jpql = "SELECT COUNT(d) FROM Doctor d WHERE d.status = 'ACTIVE'";
+            String jpql = "SELECT COUNT(d) FROM Doctor d WHERE d.user.active = true";
             TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
             return query.getSingleResult();
         } catch (Exception e) {

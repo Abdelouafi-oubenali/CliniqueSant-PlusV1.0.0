@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clinique SantéPlus - Votre santé, notre priorité</title>
+<title>Clinique SantePlus - Votre santé, notre priorité</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -1059,7 +1059,7 @@ font-size: 1rem;
     <footer>
         <div class="footer-container">
             <div class="footer-col">
-<h3>Clinique SantéPlus</h3>
+<h3>Clinique Clinique SantePlus </h3>
 <p>Votre partenaire santé de confiance, engagé à vous offrir des soins médicaux d'excellence dans un environnement bienveillant et moderne.</p>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -1106,14 +1106,14 @@ font-size: 1rem;
                         <i class="fas fa-phone-alt"></i>
                         <div>
                             <strong>Téléphone</strong><br>
-                            +33 1 45 67 89 10
+                            +212 616 12 69 29
                         </div>
                     </li>
                     <li>
                         <i class="fas fa-envelope"></i>
                         <div>
                             <strong>Email</strong><br>
-contact@santeplus.fr
+abdelouafioubenali9@gmail.com
                         </div>
                     </li>
                 </ul>
@@ -1121,7 +1121,7 @@ contact@santeplus.fr
         </div>
 
         <div class="copyright">
-            <p>&copy; 2023 Clinique SantéPlus. Tous droits réservés.</p>
+            <p>&copy; 2023 Clinique SantePlus. Tous droits réservés.</p>
         </div>
     </footer>
 
@@ -1420,7 +1420,7 @@ alert('Compte créé avec succès ! Bienvenue ' + name + '.');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clinique SantéPlus - Votre santé, notre priorité</title>
+<title>Clinique Clinique SantePlus - Votre santé, notre priorité</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -2476,7 +2476,7 @@ font-size: 1rem;
     <footer>
         <div class="footer-container">
             <div class="footer-col">
-<h3>Clinique SantéPlus</h3>
+<h3>Clinique SantePlus</h3>
 <p>Votre partenaire santé de confiance, engagé à vous offrir des soins médicaux d'excellence dans un environnement bienveillant et moderne.</p>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -2515,8 +2515,8 @@ font-size: 1rem;
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <strong>Adresse</strong><br>
-                            123 Avenue de la Santé<br>
-                            75000 Paris, France
+                            sidi taibi <br>
+                            75000 kentra, Maroc
         </div>
                     </li>
                     <li>
@@ -2538,11 +2538,11 @@ contact@santeplus.fr
         </div>
 
         <div class="copyright">
-            <p>&copy; 2023 Clinique SantéPlus. Tous droits réservés.</p>
+            <p>&copy; 2023 Clinique SantezPlus. Tous droits réservés.</p>
         </div>
     </footer>
 
-    <!-- Login Modal -->
+    <!-- Login Modal --e
     <div class="modal" id="login-modal">
         <div class="modal-content">
             <div class="modal-header">
