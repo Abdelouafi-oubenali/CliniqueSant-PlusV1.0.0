@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   postgres_clinique:
     image: postgres:latest
@@ -9,7 +11,11 @@ services:
     ports:
       - "5434:5432"
     volumes:
-      - pgdata_clinique:/var/lib/postgresql
+      - pgdata_clinique:/var/lib/postgresql/data
+    networks:
+      clinique_net:
+        aliases:
+          - postgres_clinique
 
   pgadmin4_clinique:
     image: dpage/pgadmin4:latest
@@ -21,6 +27,10 @@ services:
       - "8084:80"
     depends_on:
       - postgres_clinique
+    networks:
+      clinique_net:
+        aliases:
+          - pgadmin_clinique
 
   tomcat_clinique:
     build:
@@ -31,6 +41,14 @@ services:
       - "8083:8080"
     depends_on:
       - postgres_clinique
+    networks:
+      clinique_net:
+        aliases:
+          - tomcat_clinique
 
 volumes:
   pgdata_clinique:
+
+networks:
+  clinique_net:
+    driver: bridge
