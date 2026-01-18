@@ -8,6 +8,7 @@
     boolean isDoctorsActive = currentUri.contains("DoctorServlet");
     boolean isAppointmentsActive = currentUri.contains("appointment");
     boolean isAvailabilitiesActive = currentUri.contains("availabilities");
+    boolean isUsersActive = currentUri.contains("UserServlet");
 %>
 
 <div class="sidebar">
@@ -57,6 +58,12 @@
                 <a href="${pageContext.request.contextPath}/availabilities">
                     <i class="fas fa-pills"></i>
                     <span>Disponibilité du docteur</span>
+                </a>
+            </li>
+            <li class="<%= isUsersActive ? "active" : "" %>">
+                <a href="${pageContext.request.contextPath}/UserServlet?action=list">
+                    <i class="fas fa-users"></i>
+                    <span>Gestion des Utilisateurs</span>
                 </a>
             </li>
             <li>

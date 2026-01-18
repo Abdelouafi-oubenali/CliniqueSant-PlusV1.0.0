@@ -22,7 +22,7 @@ public class UserRepository {
     public List<User> findAll() {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            String jpql = "SELECT u FROM User u WHERE u.role != 'DOCTOR' ORDER BY u.name";
+            String jpql = "SELECT u FROM User u ORDER BY u.name";
             TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
             return query.getResultList();
         } catch (Exception e) {
@@ -158,6 +158,28 @@ public class UserRepository {
         } catch (Exception e) {
             System.err.println("Erreur findAllDoctors: " + e.getMessage());
             return List.of();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public void delete(Long id) {
+        EntityManager entityManager = emf.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            User user = entityManager.find(User.class, id);
+            if (user != null) {
+                entityManager.remove(user);
+                System.out.println("Utilisateur ID " + id + " supprimé avec succès");
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            System.err.println("Erreur delete: " + e.getMessage());
+            throw new RuntimeException("Erreur suppression utilisateur", e);
         } finally {
             entityManager.close();
         }
