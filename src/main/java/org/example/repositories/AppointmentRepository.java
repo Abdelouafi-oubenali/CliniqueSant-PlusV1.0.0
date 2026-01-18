@@ -180,6 +180,22 @@ public class AppointmentRepository {
         }
     }
 
+    public List<Appointment> findByDate(LocalDate date) {
+        EntityManager entityManager = emf.createEntityManager();
+        try {
+            String jpql = "SELECT a FROM Appointment a WHERE a.appointmentDate = :date " +
+                    "ORDER BY a.startTime";
+            TypedQuery<Appointment> query = entityManager.createQuery(jpql, Appointment.class);
+            query.setParameter("date", date);
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erreur findByDate: " + e.getMessage());
+            return List.of();
+        } finally {
+            entityManager.close();
+        }
+    }
+
     public void close() {
         if (emf != null && emf.isOpen()) {
             emf.close();
