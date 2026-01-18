@@ -213,13 +213,13 @@
                                 </div>
                                 <div class="stat-item">
                                     <div class="stat-number">
-                                        <%= calculateDoctorsCount(department) %>
+                                        <%= department.getDoctorsCount() != null ? department.getDoctorsCount() : 0 %>
                                     </div>
                                     <div class="stat-label">Médecins</div>
                                 </div>
                                 <div class="stat-item">
                                     <div class="stat-number">
-                                        <%= calculateOccupancy(department) %>%
+                                        <%= department.getOccupancyRate() != null ? department.getOccupancyRate() : 0 %>%
                                     </div>
                                     <div class="stat-label">Occupation</div>
                                 </div>
@@ -319,22 +319,5 @@
         if (name.contains("neuro")) return "neurology";
         if (name.contains("ortho")) return "orthopedics";
         return "default";
-    }
-
-    // Méthode pour calculer le nombre de médecins (logique temporaire)
-    private int calculateDoctorsCount(Department department) {
-        if (department.getSpecialties() == null) return 0;
-        return department.getSpecialties().size() * 2 + 3; // Exemple: 2 médecins par spécialité + 3 de base
-    }
-
-    // Méthode pour calculer le taux d'occupation (logique temporaire)
-    private int calculateOccupancy(Department department) {
-        // Logique temporaire - à remplacer par la vraie logique métier
-        String name = department.getName().toLowerCase();
-        if (name.contains("urgence")) return 92;
-        if (name.contains("cardio")) return 85;
-        if (name.contains("chirurg")) return 78;
-        if (name.contains("pédiat")) return 65;
-        return 75; // Valeur par défaut
     }
 %>

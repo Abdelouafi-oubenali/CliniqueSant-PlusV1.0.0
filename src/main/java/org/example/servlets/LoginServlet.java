@@ -60,7 +60,7 @@ public class LoginServlet extends HttpServlet {
 
                 // Redirection selon le rôle
                 if ("ADMIN".equalsIgnoreCase(user.getRole()) || "DOCTOR".equalsIgnoreCase(user.getRole())) {
-                    resp.sendRedirect(req.getContextPath() + "/admin/dashboard.jsp");
+                    resp.sendRedirect(req.getContextPath() + "/DashboardServlet");
                 } else if ("PATIENT".equalsIgnoreCase(user.getRole())) {
                     resp.sendRedirect(req.getContextPath() + "/patient/index.jsp");
                 } else {

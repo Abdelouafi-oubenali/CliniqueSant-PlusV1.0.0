@@ -18,7 +18,7 @@
     <div class="sidebar-menu">
         <ul>
             <li class="<%= isDashboardActive ? "active" : "" %>">
-                <a href="${pageContext.request.contextPath}/admin/dashboard.jsp">
+                <a href="${pageContext.request.contextPath}/DashboardServlet">
                     <i class="fas fa-home"></i>
                     <span>Tableau de Bord</span>
                 </a>

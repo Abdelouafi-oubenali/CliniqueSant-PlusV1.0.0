@@ -8,18 +8,23 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.entities.Department;
+import org.example.entities.Specialty;
+import org.example.entities.Doctor;
 import org.example.repositories.DepartmentRepository;
+import org.example.repositories.DoctorRepository;
 
 @WebServlet("/DepartmentServlet")
 public class DepartmentServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private DepartmentRepository departmentRepository;
+    private DoctorRepository doctorRepository;
 
     @Override
     public void init() throws ServletException {
         try {
             this.departmentRepository = new DepartmentRepository();
+            this.doctorRepository = new DoctorRepository();
             System.out.println("DepartmentServlet initialisé avec Repository");
         } catch (Exception e) {
             System.err.println("Erreur initialisation DepartmentRepository: " + e.getMessage());
@@ -88,6 +93,9 @@ public class DepartmentServlet extends HttpServlet {
 
             System.out.println("📋 " + departments.size() + " départements trouvés dans PostgreSQL");
 
+            // Enrichir chaque département avec les données réelles
+            enrichDepartmentsWithRealData(departments);
+
             // Debug des données
             debugDatabaseState(departments);
 
@@ -134,8 +142,57 @@ public class DepartmentServlet extends HttpServlet {
         System.out.println("Départements trouvés: " + departments.size());
         for (Department dept : departments) {
             System.out.println(" " + dept.getId() + " | " + dept.getCode() + " | " + dept.getName());
+            System.out.println("   - Spécialités: " + (dept.getSpecialties() != null ? dept.getSpecialties().size() : 0));
+            System.out.println("   - Médecins: " + (dept.getDoctorsCount() != null ? dept.getDoctorsCount() : 0));
+            System.out.println("   - Occupation: " + (dept.getOccupancyRate() != null ? dept.getOccupancyRate() + "%" : "N/A"));
         }
         System.out.println("=============================");
+    }
+
+    private void enrichDepartmentsWithRealData(List<Department> departments) {
+        // Récupérer tous les docteurs
+        List<Doctor> allDoctors = doctorRepository.findAll();
+        
+        for (Department dept : departments) {
+            // 1. Calculer le nombre de médecins par département
+            int doctorsCount = 0;
+            if (dept.getSpecialties() != null) {
+                for (Specialty specialty : dept.getSpecialties()) {
+                    // Compter les docteurs qui ont cette spécialité
+                    long doctorsBySpecialty = allDoctors.stream()
+                            .filter(d -> d.getSpecialty() != null && 
+                                   d.getSpecialty().getId().equals(specialty.getId()))
+                            .count();
+                    doctorsCount += doctorsBySpecialty;
+                }
+            }
+            
+            // Stocker le nombre de médecins pour utilisation dans JSP
+            dept.setDoctorsCount(doctorsCount);
+            
+            // 2. Calculer le taux d'occupation (basé sur le nombre de médecins et spécialités)
+            int occupancyRate = calculateOccupancyRate(dept, doctorsCount);
+            dept.setOccupancyRate(occupancyRate);
+            
+            System.out.println("Department enriched: " + dept.getName() + 
+                             " - Doctors: " + doctorsCount + 
+                             " - Occupancy: " + occupancyRate + "%");
+        }
+    }
+
+    private int calculateOccupancyRate(Department department, int doctorsCount) {
+        // Logique de calcul du taux d'occupation basée sur les données réelles
+        if (doctorsCount == 0) return 0;
+        
+        // Calcul simplifié : basé sur le nombre de spécialités et médecins
+        int specialtiesCount = department.getSpecialties() != null ? 
+                               department.getSpecialties().size() : 0;
+        
+        // Formule : (nombre de médecins * 15) + (nombre de spécialités * 10)
+        int baseRate = (doctorsCount * 15) + (specialtiesCount * 10);
+        
+        // Limiter le taux entre 0 et 100%
+        return Math.min(Math.max(baseRate, 0), 100);
     }
 
     private void testDatabaseConnection() {

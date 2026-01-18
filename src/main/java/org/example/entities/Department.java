@@ -21,6 +21,13 @@ public class Department {
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     private List<Specialty> specialties;
+    
+    // Champs temporaires pour affichage (non persistés)
+    @Transient
+    private Integer doctorsCount;
+    
+    @Transient
+    private Integer occupancyRate;
 
     public Department() {}
 
@@ -63,5 +70,21 @@ public class Department {
 
     public void setSpecialties(List<Specialty> specialties) {
         this.specialties = specialties;
+    }
+    
+    public Integer getDoctorsCount() {
+        return doctorsCount;
+    }
+    
+    public void setDoctorsCount(Integer doctorsCount) {
+        this.doctorsCount = doctorsCount;
+    }
+    
+    public Integer getOccupancyRate() {
+        return occupancyRate;
+    }
+    
+    public void setOccupancyRate(Integer occupancyRate) {
+        this.occupancyRate = occupancyRate;
     }
 }
