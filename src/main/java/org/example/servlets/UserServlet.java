@@ -6,7 +6,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.entities.User;
+import org.example.entities.Doctor;
+import org.example.entities.Patient;
 import org.example.repositories.UserRepository;
+import org.example.repositories.DoctorRepository;
+import org.example.repositories.PatientRepository;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,11 +19,15 @@ public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private UserRepository userRepository;
+    private DoctorRepository doctorRepository;
+    private PatientRepository patientRepository;
 
     @Override
     public void init() throws ServletException {
         try {
             this.userRepository = new UserRepository();
+            this.doctorRepository = new DoctorRepository();
+            this.patientRepository = new PatientRepository();
             System.out.println("UserServlet initialisé avec Repository");
         } catch (Exception e) {
             System.err.println("Erreur initialisation UserRepository: " + e.getMessage());
@@ -207,13 +215,31 @@ public class UserServlet extends HttpServlet {
                 return;
             }
 
-            User user = userRepository.findById(Long.parseLong(id));
+            Long userId = Long.parseLong(id);
+            User user = userRepository.findById(userId);
             if (user == null) {
                 response.sendRedirect(request.getContextPath() + "/UserServlet?action=list&error=notfound");
                 return;
             }
 
-            userRepository.delete(Long.parseLong(id));
+            // Supprimer les enregistrements associés selon le rôle
+            String userRole = user.getRole();
+            if ("DOCTOR".equals(userRole)) {
+                Doctor doctor = doctorRepository.findByUserId(userId);
+                if (doctor != null) {
+                    doctorRepository.delete(doctor.getId());
+                    System.out.println("Enregistrement Doctor supprimé pour l'utilisateur ID: " + id);
+                }
+            } else if ("PATIENT".equals(userRole)) {
+                Patient patient = patientRepository.findByUserId(userId);
+                if (patient != null) {
+                    patientRepository.delete(patient.getId());
+                    System.out.println("Enregistrement Patient supprimé pour l'utilisateur ID: " + id);
+                }
+            }
+
+            // Supprimer l'utilisateur
+            userRepository.delete(userId);
             System.out.println("Suppression utilisateur ID: " + id);
             response.sendRedirect(request.getContextPath() + "/UserServlet?action=list&success=deleted");
 
@@ -273,6 +299,21 @@ public class UserServlet extends HttpServlet {
             User savedUser = userRepository.save(user);
             System.out.println("Utilisateur ajouté avec succès - ID: " + savedUser.getId());
 
+            // Créer l'enregistrement associé selon le rôle
+            String userRole = role.trim().toUpperCase();
+            if ("DOCTOR".equals(userRole)) {
+                Doctor doctor = new Doctor();
+                doctor.setUser(savedUser);
+                doctor.setMatricule("DOC-" + savedUser.getId());
+                doctorRepository.save(doctor);
+                System.out.println("Enregistrement Doctor créé pour l'utilisateur ID: " + savedUser.getId());
+            } else if ("PATIENT".equals(userRole)) {
+                Patient patient = new Patient();
+                patient.setUser(savedUser);
+                patientRepository.save(patient);
+                System.out.println("Enregistrement Patient créé pour l'utilisateur ID: " + savedUser.getId());
+            }
+
             response.sendRedirect(request.getContextPath() + "/UserServlet?action=list&success=added");
 
         } catch (Exception e) {
@@ -307,9 +348,13 @@ public class UserServlet extends HttpServlet {
                 return;
             }
 
-            User user = userRepository.findById(Long.parseLong(id));
+            Long userId = Long.parseLong(id);
+            User user = userRepository.findById(userId);
             if (user != null) {
                 System.out.println("Utilisateur trouvé: " + user.getName());
+
+                String oldRole = user.getRole();
+                String newRole = role.trim().toUpperCase();
 
                 user.setName(name.trim());
                 user.setEmail(email.trim());
@@ -318,6 +363,38 @@ public class UserServlet extends HttpServlet {
 
                 User updatedUser = userRepository.save(user);
                 System.out.println("Utilisateur mis à jour avec succès - ID: " + updatedUser.getId());
+
+                // Gérer les changements de rôle
+                if (!oldRole.equals(newRole)) {
+                    // Supprimer l'ancien enregistrement associé si nécessaire
+                    if ("DOCTOR".equals(oldRole)) {
+                        Doctor oldDoctor = doctorRepository.findByUserId(userId);
+                        if (oldDoctor != null) {
+                            doctorRepository.delete(oldDoctor.getId());
+                            System.out.println("Enregistrement Doctor supprimé lors du changement de rôle - Utilisateur ID: " + id);
+                        }
+                    } else if ("PATIENT".equals(oldRole)) {
+                        Patient oldPatient = patientRepository.findByUserId(userId);
+                        if (oldPatient != null) {
+                            patientRepository.delete(oldPatient.getId());
+                            System.out.println("Enregistrement Patient supprimé lors du changement de rôle - Utilisateur ID: " + id);
+                        }
+                    }
+
+                    // Créer le nouvel enregistrement associé si nécessaire
+                    if ("DOCTOR".equals(newRole)) {
+                        Doctor newDoctor = new Doctor();
+                        newDoctor.setUser(updatedUser);
+                        newDoctor.setMatricule("DOC-" + userId);
+                        doctorRepository.save(newDoctor);
+                        System.out.println("Enregistrement Doctor créé lors du changement de rôle - Utilisateur ID: " + id);
+                    } else if ("PATIENT".equals(newRole)) {
+                        Patient newPatient = new Patient();
+                        newPatient.setUser(updatedUser);
+                        patientRepository.save(newPatient);
+                        System.out.println("Enregistrement Patient créé lors du changement de rôle - Utilisateur ID: " + id);
+                    }
+                }
 
                 response.sendRedirect(request.getContextPath() + "/UserServlet?action=list&success=updated");
             } else {
