@@ -9,13 +9,16 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: clinique
     ports:
-      - "5434:5432"
+      - "5434:5432"   # Host:Container
     volumes:
       - pgdata_clinique:/var/lib/postgresql/data
     networks:
-      clinique_net:
-        aliases:
-          - postgres_clinique
+      - clinique_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d clinique"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   pgadmin4_clinique:
     image: dpage/pgadmin4:latest
@@ -28,9 +31,7 @@ services:
     depends_on:
       - postgres_clinique
     networks:
-      clinique_net:
-        aliases:
-          - pgadmin_clinique
+      - clinique_net
 
   tomcat_clinique:
     build:
@@ -40,11 +41,10 @@ services:
     ports:
       - "8083:8080"
     depends_on:
-      - postgres_clinique
+      postgres_clinique:
+        condition: service_healthy
     networks:
-      clinique_net:
-        aliases:
-          - tomcat_clinique
+      - clinique_net
 
 volumes:
   pgdata_clinique:
